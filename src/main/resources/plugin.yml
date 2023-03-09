@@ -1,0 +1,8 @@
+name: DiscordEssentials
+version: ${project.version}
+main: net.philocraft.DiscordEssentials
+api-version: 1.19
+authors: [ LittleBigOwl ]
+description: A custom DiscordSRV alternative
+website: littlebigowl.dev
+prefix: DiscordEssentials
