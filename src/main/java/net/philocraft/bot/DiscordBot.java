@@ -28,14 +28,16 @@ import net.philocraft.bot.events.OnReadyEvent;
 
 public class DiscordBot {
     
-    private JDA self;
+    private JDA bot;
     private String channelId;
 
     public DiscordBot(String token, String suffix, String channelId) throws LoginException {
         
         this.channelId = channelId;
 
-        self = JDABuilder.create(
+        suffix = suffix.replace("{playerCount}", Bukkit.getOnlinePlayers().size() + "");
+
+        bot = JDABuilder.create(
             token, 
             GatewayIntent.GUILD_MEMBERS,
             GatewayIntent.GUILD_VOICE_STATES,
@@ -45,29 +47,31 @@ public class DiscordBot {
             GatewayIntent.GUILD_MESSAGE_REACTIONS
         )
         .enableCache(CacheFlag.VOICE_STATE)
-        .setActivity(Activity.playing(Bukkit.getOnlinePlayers().size() + suffix))
+        .setActivity(Activity.playing(suffix))
         .build();
 
         //!REGISTER COMMANDS
-        self.addEventListener(new PlayCommand());
-        self.addEventListener(new PauseCommand());
-        self.addEventListener(new ResumeCommand());
-        self.addEventListener(new StopCommand());
-        self.addEventListener(new ShuffleCommand());
-        self.addEventListener(new QueueCommand());
-        self.addEventListener(new LoopCommand());
-        self.addEventListener(new NowplayingCommand());
-        self.addEventListener(new SkipCommand());
-        self.addEventListener(new RemoveCommnand());
-        self.addEventListener(new JoinCommand());
-        self.addEventListener(new LeaveCommand());
+        bot.addEventListener(new PlayCommand());
+        bot.addEventListener(new PauseCommand());
+        bot.addEventListener(new ResumeCommand());
+        bot.addEventListener(new StopCommand());
+        bot.addEventListener(new ShuffleCommand());
+        bot.addEventListener(new QueueCommand());
+        bot.addEventListener(new LoopCommand());
+        bot.addEventListener(new NowplayingCommand());
+        bot.addEventListener(new SkipCommand());
+        bot.addEventListener(new RemoveCommnand());
+        bot.addEventListener(new JoinCommand());
+        bot.addEventListener(new LeaveCommand());
 
-        self.addEventListener(new OnlineCommand());
-        self.addEventListener(new OnMessageReceived(this.channelId));
+        bot.addEventListener(new OnlineCommand());
+        bot.addEventListener(new OnMessageReceived(this.channelId));
 
-        self.addEventListener(new OnReadyEvent(self));
-        self.addEventListener(new OnGuildVoiceLeave());
+        bot.addEventListener(new OnReadyEvent(bot));
+        bot.addEventListener(new OnGuildVoiceLeave());
     }
 
-
+    public void stop() {
+        this.bot.shutdown();
+    }
 }

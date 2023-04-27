@@ -35,6 +35,10 @@ public final class DiscordEssentials extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if(bot != null) {
+            bot.stop();
+            this.getLogger().info("Bot disabled.");
+        }
         this.getLogger().info("Plugin disabled.");
     }
 
