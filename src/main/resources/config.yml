@@ -1,0 +1,8 @@
+# Your discord bot token obtainable via the discord dev portal
+token: [token]
+
+# The discord channel id that the bot will use to communicate player activity
+channel: [channel]
+
+# The bot's status. {playerCount} will be replaced with actual server player count
+status: "{playerCount} / 20"
