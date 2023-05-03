@@ -3,10 +3,11 @@ package net.philocraft.bot.commands;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.philocraft.constants.Colors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import dev.littlebigowl.api.constants.Colors;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,7 @@ public class OnlineCommand extends ListenerAdapter {
             }
             
             if(Bukkit.getOnlinePlayers().size() == 0) { 
-                event.replyEmbeds(new EmbedBuilder().setDescription("There are no players online.").setColor(Colors.DISCORD.getHashCode()).build()).queue(); 
+                event.replyEmbeds(new EmbedBuilder().setDescription("There are no players online.").setColor(Colors.DISCORD.getColor()).build()).queue(); 
                 return; 
             }
 
@@ -37,7 +38,7 @@ public class OnlineCommand extends ListenerAdapter {
             }
             embedContent.delete(embedContent.length()-2, embedContent.length());
 
-            event.replyEmbeds(new EmbedBuilder().setDescription(embedContent).setColor(Colors.DISCORD.getHashCode()).setTitle("Online Players").build()).queue();
+            event.replyEmbeds(new EmbedBuilder().setDescription(embedContent).setColor(Colors.DISCORD.getColor()).setTitle("Online Players").build()).queue();
         }
     }
 }

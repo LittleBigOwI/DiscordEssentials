@@ -8,20 +8,14 @@ import org.bukkit.entity.Player;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.md_5.bungee.api.ChatColor;
+import net.philocraft.DiscordEssentials;
 
 public class OnMessageReceived extends ListenerAdapter {
-
-    private String channelId;
-    
-    public OnMessageReceived(String channelId) {
-        this.channelId = channelId;
-    }
-    
 
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
 
-        if(event.getChannel().getId().equals(this.channelId)) {
+        if(event.getChannel().getId().equals(DiscordEssentials.api.discord.getChannel())) {
 
             if(event.getMember() == null) {
                 return;

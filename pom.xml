@@ -59,6 +59,17 @@
       <artifactId>lavaplayer</artifactId>
       <version>1.3.77</version>
     </dependency>
+    <dependency>
+      <groupId>club.minnced</groupId>
+      <artifactId>discord-webhooks</artifactId>
+      <version>0.8.0</version>
+    </dependency>
+    <dependency>
+      <groupId>dev.littlebigowl.api</groupId>
+      <artifactId>essentials-api</artifactId>*
+      <version>1.0.0</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 
   <build>

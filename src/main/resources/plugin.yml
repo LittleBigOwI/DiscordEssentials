@@ -6,3 +6,16 @@ authors: [ LittleBigOwl ]
 description: A custom DiscordSRV alternative
 website: littlebigowl.dev
 prefix: DiscordEssentials
+
+depend: [EssentialsAPI]
+
+commands:
+  link:
+    usage: /<command> [code]
+    description: Links your account to discord
+    permission: philocraft.discord.link
+
+permissions:
+  philocraft.discord.link:
+    description: Allows account linking
+    default: true
