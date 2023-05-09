@@ -3,15 +3,18 @@ package net.philocraft;
 import java.sql.SQLException;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import dev.littlebigowl.api.EssentialsAPI;
 import dev.littlebigowl.api.constants.Colors;
+import dev.littlebigowl.api.models.EssentialsTeam;
 import net.philocraft.bot.DiscordBot;
 import net.philocraft.commands.LinkCommand;
 import net.philocraft.events.OnPlayerChatEvent;
 import net.philocraft.events.OnPlayerJoinEvent;
 import net.philocraft.events.OnPlayerQuitEvent;
+import net.philocraft.models.Webhook;
 import net.philocraft.utils.DatabaseUtil;
 
 public final class DiscordEssentials extends JavaPlugin {
@@ -64,6 +67,24 @@ public final class DiscordEssentials extends JavaPlugin {
 
     @Override
     public void onDisable() {
+
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            EssentialsTeam team = DiscordEssentials.api.scoreboard.getEssentialsTeam(player);
+            if(team == null) {
+                team = DiscordEssentials.api.scoreboard.setTeam(player);
+            }
+            
+            String prefix = "[" + team.getPrefix() + "]";
+
+            bot.getWebhook().sendEmbed(
+                Colors.FAILURE.getColor(),
+                DiscordEssentials.api.discord.getWebhookAvatarURL(),
+                Webhook.getAvatarURL(player),
+                "Server",
+                prefix + " " + player.getName() + " left the game."
+            );
+
+        }
         
         if(bot != null) {
             bot.getWebhook().sendEmbed(
