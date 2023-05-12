@@ -11,7 +11,9 @@ import dev.littlebigowl.api.constants.Colors;
 import dev.littlebigowl.api.models.EssentialsTeam;
 import net.philocraft.bot.DiscordBot;
 import net.philocraft.commands.LinkCommand;
+import net.philocraft.events.OnAdvancementDoneEvent;
 import net.philocraft.events.OnPlayerChatEvent;
+import net.philocraft.events.OnPlayerDeath;
 import net.philocraft.events.OnPlayerJoinEvent;
 import net.philocraft.events.OnPlayerQuitEvent;
 import net.philocraft.models.Webhook;
@@ -39,7 +41,9 @@ public final class DiscordEssentials extends JavaPlugin {
         this.getCommand("link").setExecutor(new LinkCommand());
 
         //!REGISTER EVENTS
+        this.getServer().getPluginManager().registerEvents(new OnAdvancementDoneEvent(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerChatEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerDeath(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerJoinEvent(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerQuitEvent(), this);
         

@@ -52,5 +52,23 @@ public class Webhook {
         WebhookClient client = this.clientBuilder.build();
         client.send(webhookMessage);
     }
+
+    public void sendEmbed(Color color, String avatarURL, String authorAvatarURL, String username, String message, String description) {
+        this.messageBuilder.addEmbeds(
+            new WebhookEmbedBuilder()
+            .setColor(color.hashCode())
+            .setAuthor(new EmbedAuthor(message, authorAvatarURL, null))
+            .setDescription(description)
+            .build()
+        );
+        
+        this.messageBuilder.setAvatarUrl(avatarURL);
+        this.messageBuilder.setUsername(username);
+
+        WebhookMessage webhookMessage = this.messageBuilder.build();
+
+        WebhookClient client = this.clientBuilder.build();
+        client.send(webhookMessage);
+    }
     
 }
