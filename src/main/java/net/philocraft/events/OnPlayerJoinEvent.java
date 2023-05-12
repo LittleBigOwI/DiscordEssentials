@@ -7,9 +7,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import dev.littlebigowl.api.constants.Colors;
 import dev.littlebigowl.api.models.EssentialsTeam;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import net.philocraft.DiscordEssentials;
 import net.philocraft.bot.DiscordBot;
+import net.philocraft.models.Link;
 import net.philocraft.models.Webhook;
+import net.philocraft.utils.DatabaseUtil;
 
 public class OnPlayerJoinEvent implements Listener {
     
@@ -25,6 +30,26 @@ public class OnPlayerJoinEvent implements Listener {
         }
         
         String prefix = "[" + team.getPrefix() + "]";
+        Link link = DatabaseUtil.getLinkbyUUID(player.getUniqueId());
+
+        if(link != null && link.hasUserID()) {
+            for(Guild guild : DiscordEssentials.getBot().getGuilds()) {
+                
+                Member member = guild.getMemberById(link.getUserID());
+                Role role = guild.getRoleById(team.getRoleId());
+                Role linkedRole = guild.getRoleById(DiscordEssentials.api.discord.getLinkedRole());
+
+                if(!member.getRoles().contains(linkedRole)) {
+                    guild.addRoleToMember(member, linkedRole).queue();
+                }
+
+                if(!member.getRoles().contains(role)) {
+                    guild.addRoleToMember(member, role).queue();
+                }
+            }
+
+        }
+        
 
         bot.getWebhook().sendEmbed(
             Colors.SUCCESS.getColor(),

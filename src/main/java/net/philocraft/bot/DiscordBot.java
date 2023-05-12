@@ -1,6 +1,7 @@
 package net.philocraft.bot;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.security.auth.login.LoginException;
 
@@ -9,6 +10,7 @@ import org.bukkit.Bukkit;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import net.philocraft.DiscordEssentials;
@@ -27,7 +29,7 @@ public class DiscordBot {
 
         this.status = status;
 
-        bot = JDABuilder.create(
+        this.bot = JDABuilder.create(
             token, 
             GatewayIntent.GUILD_MEMBERS,
             GatewayIntent.GUILD_VOICE_STATES,
@@ -41,16 +43,16 @@ public class DiscordBot {
         .build();
 
         //!REGISTER COMMANDS
-        bot.addEventListener(new OnlineCommand());
-        bot.addEventListener(new LinkCommand());
+        this.bot.addEventListener(new OnlineCommand());
+        this.bot.addEventListener(new LinkCommand());
         
         //!REGISTER EVENTS
-        bot.addEventListener(new OnMessageReceived());
-        bot.addEventListener(new OnReadyEvent(bot));
+        this.bot.addEventListener(new OnMessageReceived());
+        this.bot.addEventListener(new OnReadyEvent(bot));
 
         plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
             
-            bot.getPresence().setActivity(Activity.playing(
+            this.bot.getPresence().setActivity(Activity.playing(
                 this.status
                 .replace("{playerCount}", Bukkit.getOnlinePlayers().size() + "")
                 .replace("{maxPlayers}", Bukkit.getMaxPlayers() + ""))
@@ -86,7 +88,7 @@ public class DiscordBot {
         } catch (SQLException e) {
             plugin.getLogger().severe("Couldn't initialize table : " + e.getMessage());
         }
-
+        
         return bot;
     }
 
@@ -96,6 +98,10 @@ public class DiscordBot {
 
     public String getStatus() {
         return this.status;
+    }
+
+    public List<Guild> getGuilds() {
+        return this.bot.getGuilds();
     }
 
     public void stop() {

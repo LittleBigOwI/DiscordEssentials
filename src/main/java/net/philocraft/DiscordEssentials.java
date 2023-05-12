@@ -66,6 +66,7 @@ public final class DiscordEssentials extends JavaPlugin {
             );
         }
         
+        DatabaseUtil.checkRoles();
         this.getLogger().info("Plugin enabled.");
     }
 

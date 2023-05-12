@@ -13,6 +13,11 @@ import org.bukkit.entity.Player;
 import dev.littlebigowl.api.constants.Colors;
 import dev.littlebigowl.api.errors.InvalidArgumentsException;
 import dev.littlebigowl.api.errors.InvalidSenderException;
+import dev.littlebigowl.api.models.EssentialsScoreboard;
+import dev.littlebigowl.api.models.EssentialsTeam;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import net.philocraft.DiscordEssentials;
 import net.philocraft.models.Link;
 import net.philocraft.utils.DatabaseUtil;
@@ -77,6 +82,27 @@ public class LinkCommand implements CommandExecutor, TabCompleter {
                 } catch (SQLException e) {
                     DiscordEssentials.getPlugin().getLogger().severe("Couldn't complete link : " + e.getMessage());
                     return true;
+                }
+
+                link = DatabaseUtil.getLinkbyUUID(player.getUniqueId());
+
+                for(EssentialsTeam team : DiscordEssentials.api.scoreboard.getEssentialsTeams()) {
+                    if(team.getPlaytime() <= EssentialsScoreboard.getPlaytime(player)) {
+                        for(Guild guild : DiscordEssentials.getBot().getGuilds()) {
+                            
+                            Member member = guild.getMemberById(link.getUserID());
+                            Role role = guild.getRoleById(team.getRoleId());
+                            Role linkedRole = guild.getRoleById(DiscordEssentials.api.discord.getLinkedRole());
+            
+                            if(!member.getRoles().contains(linkedRole)) {
+                                guild.addRoleToMember(member, linkedRole).queue();
+                            }
+            
+                            if(!member.getRoles().contains(role)) {
+                                guild.addRoleToMember(member, role).queue();
+                            }
+                        }
+                    }
                 }
 
                 response = Colors.SUCCESS.getChatColor() + "Successfully linked your account.";

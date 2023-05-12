@@ -2,6 +2,13 @@ package net.philocraft.bot.commands;
 
 import java.sql.SQLException;
 
+import org.bukkit.Bukkit;
+
+import dev.littlebigowl.api.models.EssentialsScoreboard;
+import dev.littlebigowl.api.models.EssentialsTeam;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -67,6 +74,27 @@ public class LinkCommand extends ListenerAdapter {
                     } catch (SQLException e) {
                         DiscordEssentials.getPlugin().getLogger().severe("Couldn't complete link : " + e.getMessage());
                         return;
+                    }
+                    
+                    link = DatabaseUtil.getLinkbyUserID(event.getMember().getId());
+
+                    for(EssentialsTeam team : DiscordEssentials.api.scoreboard.getEssentialsTeams()) {
+                        if(team.getPlaytime() >= 0 &&team.getPlaytime() <= EssentialsScoreboard.getPlaytime(Bukkit.getOfflinePlayer(link.getUUID()))) {
+                            for(Guild guild : DiscordEssentials.getBot().getGuilds()) {
+                                
+                                Member member = event.getMember();
+                                Role role = guild.getRoleById(team.getRoleId());
+                                Role linkedRole = guild.getRoleById(DiscordEssentials.api.discord.getLinkedRole());
+                
+                                if(!member.getRoles().contains(linkedRole)) {
+                                    guild.addRoleToMember(member, linkedRole).queue();
+                                }
+                
+                                if(!member.getRoles().contains(role)) {
+                                    guild.addRoleToMember(member, role).queue();
+                                }
+                            }
+                        }
                     }
 
                     response = "Successfully linked your account.";
