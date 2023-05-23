@@ -5,6 +5,10 @@ import javax.annotation.Nonnull;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import dev.littlebigowl.api.constants.Colors;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.md_5.bungee.api.ChatColor;
@@ -17,16 +21,56 @@ public class OnMessageReceived extends ListenerAdapter {
 
         if(event.getChannel().getId().equals(DiscordEssentials.api.discord.getChannel())) {
 
-            if(event.getMember() == null) {
+            Member member = event.getMember();
+            Message message = event.getMessage();
+            Message reply = message.getReferencedMessage();
+
+            String chat = "";
+
+            if(event.getMember() == null || message == null) {
                 return;
             }
 
+            String name = member.getEffectiveName();
+            if(member.getNickname() != null) {
+                name = member.getNickname();
+            }
+
+            
+            chat = 
+                ChatColor.WHITE + "[" + 
+                Colors.DISCORD.getChatColor() + "Discord" + 
+                ChatColor.WHITE + " | " + 
+                ChatColor.of(member.getRoles().get(0).getColor()) + name + 
+                ChatColor.WHITE + "] ";
+            
+            if(reply != null) {
+                Member replyMember = reply.getMember();
+                User user = reply.getAuthor();
+
+                String replyName;
+                if(replyMember != null) {
+                    replyName = member.getEffectiveName();
+                    if(member.getNickname() != null) { replyName = member.getNickname(); }
+                
+                } else if(user != null) {
+                    replyName = user.getName();
+                
+                } else {
+                    replyName = "null";
+
+                }
+
+                chat += ChatColor.GRAY + "(Replying to @" + replyName + ": " + reply.getContentDisplay() + ") ";
+            }
+
+            chat += ChatColor.WHITE + message.getContentDisplay();
+
             for (Player player : Bukkit.getOnlinePlayers()) {
-                String message = ChatColor.translateAlternateColorCodes('&', "&9@" + event.getMember().getEffectiveName() + " &7»&f " + event.getMessage().getContentDisplay());
-                player.sendMessage(message);
+                player.sendMessage(chat);
             }
             
-            Bukkit.getLogger().info(event.getMember().getEffectiveName() + " » " + event.getMessage().getContentDisplay());
+            Bukkit.getLogger().info(chat);
         }
     }
 }
