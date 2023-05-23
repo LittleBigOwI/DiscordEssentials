@@ -50,7 +50,7 @@ public class LinkCommand implements CommandExecutor, TabCompleter {
                     DiscordEssentials.getPlugin().getLogger().severe("Couldn't create link : " + e.getMessage());
                 }
 
-                response = Colors.INFO.getChatColor() + "Your code is : " + Colors.MAJOR.getChatColor() + code;
+                response = Colors.INFO.getChatColor() + "Your code is : " + Colors.INFO_DARK.getChatColor() + code;
 
             } else {
                 code = link.getCode();
@@ -58,7 +58,7 @@ public class LinkCommand implements CommandExecutor, TabCompleter {
                 if(link.hasUUID() && link.hasUserID()) {
                     response = Colors.SUCCESS.getChatColor() + "Your account is already linked.";
                 } else {
-                    response = Colors.INFO.getChatColor() + "Your code is : " + Colors.MAJOR.getChatColor() + code;
+                    response = Colors.INFO.getChatColor() + "Your code is : " + Colors.INFO_DARK.getChatColor() + code;
                 }
             }
         

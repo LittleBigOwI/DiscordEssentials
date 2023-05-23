@@ -39,7 +39,7 @@ public class OnMessageReceived extends ListenerAdapter {
             
             chat = 
                 ChatColor.WHITE + "[" + 
-                Colors.DISCORD.getChatColor() + "Discord" + 
+                Colors.DISCORD_OLD.getChatColor() + "Discord" + 
                 ChatColor.WHITE + " | " + 
                 ChatColor.of(member.getRoles().get(0).getColor()) + name + 
                 ChatColor.WHITE + "] ";
