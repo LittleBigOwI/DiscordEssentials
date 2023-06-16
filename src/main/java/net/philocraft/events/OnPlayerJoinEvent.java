@@ -1,5 +1,6 @@
 package net.philocraft.events;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,12 +33,30 @@ public class OnPlayerJoinEvent implements Listener {
         String prefix = "[" + team.getPrefix() + "]";
         Link link = DatabaseUtil.getLinkbyUUID(player.getUniqueId());
 
+        bot.getWebhook().sendEmbed(
+            Colors.SUCCESS.getColor(),
+            DiscordEssentials.api.discord.getWebhookAvatarURL(),
+            Webhook.getAvatarURL(player),
+            "Server",
+            prefix + " " + player.getName() + " joined the game."
+        );
+
         if(link != null && link.hasUserID()) {
             for(Guild guild : DiscordEssentials.getBot().getGuilds()) {
                 
                 Member member = guild.getMemberById(link.getUserID());
                 Role role = guild.getRoleById(team.getRoleId());
                 Role linkedRole = guild.getRoleById(DiscordEssentials.api.discord.getLinkedRole());
+
+                if(role == null) {
+                    Bukkit.getLogger().warning("[DEBUG] : GuildId{" + guild.getId() + "}, RoleId{" + team.getRoleId() + "}");
+                    return;
+                }
+
+                if(linkedRole == null) {
+                    Bukkit.getLogger().warning("[DEBUG] : GuildId{" + guild.getId() + "}, RoleId{" + DiscordEssentials.api.discord.getLinkedRole() + "}");
+                    return;
+                }
 
                 if(!member.getRoles().contains(linkedRole)) {
                     guild.addRoleToMember(member, linkedRole).queue();
@@ -49,16 +68,6 @@ public class OnPlayerJoinEvent implements Listener {
             }
 
         }
-        
-
-        bot.getWebhook().sendEmbed(
-            Colors.SUCCESS.getColor(),
-            DiscordEssentials.api.discord.getWebhookAvatarURL(),
-            Webhook.getAvatarURL(player),
-            "Server",
-            prefix + " " + player.getName() + " joined the game."
-        );
-    
     }
 
 }

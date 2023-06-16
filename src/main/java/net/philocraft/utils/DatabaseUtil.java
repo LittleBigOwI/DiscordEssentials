@@ -175,7 +175,12 @@ public class DatabaseUtil {
                         Member member = guild.getMemberById(link.getUserID());
 
                         Role role = guild.getRoleById(team.getRoleId());
-                        guild.addRoleToMember(member, role).queue();
+
+                        if(role == null) {
+                            Bukkit.getLogger().warning("[DEBUG] : GuildId{" + guild.getId() + "}, MemberId{" + link.getUserID() + "}");
+                        } else {
+                            guild.addRoleToMember(member, role).queue();
+                        }
                     }
 
                 }

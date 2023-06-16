@@ -1,5 +1,6 @@
 package net.philocraft.events;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -43,7 +44,7 @@ public class OnPlayerDeath implements Listener {
             int y = (int) player.getLocation().getY();
             int z = (int) player.getLocation().getZ();
 
-            DiscordEssentials.getPlugin().getLogger().info("\u001b[38;5;206m@Server \u001b[38;5;248m» \u001b[37;1m\033[3m" + deathMessage + "\u001b[0m\u001b[38;5;46m [X: " + x + ", Y: " + y + ", Z: " + z + "]\u001b[0m");
+            Bukkit.getLogger().info("\u001b[38;5;46m [X: " + x + ", Y: " + y + ", Z: " + z + "]\u001b[0m");
         }
     }
 
