@@ -50,7 +50,7 @@ public class OnMessageReceived extends ListenerAdapter {
 
                 String replyName;
                 if(replyMember != null) {
-                    replyName = member.getEffectiveName();
+                    replyName = replyMember.getEffectiveName();
                     if(replyMember.getNickname() != null) { replyName = replyMember.getNickname(); }
                 
                 } else if(user != null) {
