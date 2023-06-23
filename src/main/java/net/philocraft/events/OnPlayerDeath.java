@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 import dev.littlebigowl.api.constants.Colors;
+import dev.littlebigowl.api.models.EssentialsPermission;
 import dev.littlebigowl.api.models.EssentialsTeam;
 import net.philocraft.DiscordEssentials;
 import net.philocraft.models.Webhook;
@@ -30,15 +31,17 @@ public class OnPlayerDeath implements Listener {
             }
             
             String prefix = "[" + team.getPrefix() + "]";
+            
+            if(!EssentialsPermission.isVanished(player)) {
+                DiscordEssentials.getBot().getWebhook().sendEmbed(
+                    Colors.MINOR.getColor(),
+                    DiscordEssentials.api.discord.getWebhookAvatarURL(),
+                    Webhook.getAvatarURL(player),
+                    "Server",
+                    prefix + " " + deathMessage
 
-            DiscordEssentials.getBot().getWebhook().sendEmbed(
-                Colors.MINOR.getColor(),
-                DiscordEssentials.api.discord.getWebhookAvatarURL(),
-                Webhook.getAvatarURL(player),
-                "Server",
-                prefix + " " + deathMessage
-
-            );
+                );
+            }
 
             int x = (int) player.getLocation().getX();
             int y = (int) player.getLocation().getY();

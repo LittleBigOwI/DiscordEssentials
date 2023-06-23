@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import dev.littlebigowl.api.EssentialsAPI;
 import dev.littlebigowl.api.constants.Colors;
+import dev.littlebigowl.api.models.EssentialsPermission;
 import dev.littlebigowl.api.models.EssentialsTeam;
 import net.philocraft.bot.DiscordBot;
 import net.philocraft.commands.LinkCommand;
@@ -80,15 +81,16 @@ public final class DiscordEssentials extends JavaPlugin {
             }
             
             String prefix = "[" + team.getPrefix() + "]";
-
-            bot.getWebhook().sendEmbed(
-                Colors.FAILURE.getColor(),
-                DiscordEssentials.api.discord.getWebhookAvatarURL(),
-                Webhook.getAvatarURL(player),
-                "Server",
-                prefix + " " + player.getName() + " left the game."
-            );
-
+            
+            if(!EssentialsPermission.isVanished(player)) {
+                bot.getWebhook().sendEmbed(
+                    Colors.FAILURE.getColor(),
+                    DiscordEssentials.api.discord.getWebhookAvatarURL(),
+                    Webhook.getAvatarURL(player),
+                    "Server",
+                    prefix + " " + player.getName() + " left the game."
+                );
+            }
         }
         
         if(bot != null) {

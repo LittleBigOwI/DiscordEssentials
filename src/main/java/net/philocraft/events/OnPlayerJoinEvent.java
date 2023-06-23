@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import dev.littlebigowl.api.constants.Colors;
+import dev.littlebigowl.api.models.EssentialsPermission;
 import dev.littlebigowl.api.models.EssentialsTeam;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -33,13 +34,15 @@ public class OnPlayerJoinEvent implements Listener {
         String prefix = "[" + team.getPrefix() + "]";
         Link link = DatabaseUtil.getLinkbyUUID(player.getUniqueId());
 
-        bot.getWebhook().sendEmbed(
-            Colors.SUCCESS.getColor(),
-            DiscordEssentials.api.discord.getWebhookAvatarURL(),
-            Webhook.getAvatarURL(player),
-            "Server",
-            prefix + " " + player.getName() + " joined the game."
-        );
+        if(!EssentialsPermission.isVanished(player)) {
+            bot.getWebhook().sendEmbed(
+                Colors.SUCCESS.getColor(),
+                DiscordEssentials.api.discord.getWebhookAvatarURL(),
+                Webhook.getAvatarURL(player),
+                "Server",
+                prefix + " " + player.getName() + " joined the game."
+            );
+        }
 
         if(link != null && link.hasUserID()) {
             for(Guild guild : DiscordEssentials.getBot().getGuilds()) {

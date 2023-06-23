@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import dev.littlebigowl.api.constants.Colors;
+import dev.littlebigowl.api.models.EssentialsPermission;
 import dev.littlebigowl.api.models.EssentialsTeam;
 import net.philocraft.DiscordEssentials;
 import net.philocraft.bot.DiscordBot;
@@ -25,15 +26,16 @@ public class OnPlayerQuitEvent implements Listener {
         }
         
         String prefix = "[" + team.getPrefix() + "]";
-
-        bot.getWebhook().sendEmbed(
-            Colors.FAILURE.getColor(),
-            DiscordEssentials.api.discord.getWebhookAvatarURL(),
-            Webhook.getAvatarURL(player),
-            "Server",
-            prefix + " " + player.getName() + " left the game."
-        );
-
+        
+        if(!EssentialsPermission.isVanished(player)) {
+            bot.getWebhook().sendEmbed(
+                Colors.FAILURE.getColor(),
+                DiscordEssentials.api.discord.getWebhookAvatarURL(),
+                Webhook.getAvatarURL(player),
+                "Server",
+                prefix + " " + player.getName() + " left the game."
+            );
+        }
     }
 
 }
