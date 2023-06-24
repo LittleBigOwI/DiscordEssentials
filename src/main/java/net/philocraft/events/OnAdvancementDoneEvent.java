@@ -5,6 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 
 import dev.littlebigowl.api.constants.Colors;
+import dev.littlebigowl.api.models.EssentialsPermission;
 import dev.littlebigowl.api.models.EssentialsTeam;
 import net.philocraft.DiscordEssentials;
 import net.philocraft.models.Webhook;
@@ -152,14 +153,16 @@ public class OnAdvancementDoneEvent implements Listener {
         
         String prefix = "[" + team.getPrefix() + "]";
 
-        DiscordEssentials.getBot().getWebhook().sendEmbed(
-            Colors.INFO.getColor(),
-            DiscordEssentials.api.discord.getWebhookAvatarURL(),
-            Webhook.getAvatarURL(event.getPlayer()),
-            "Server",
-            prefix + " " + event.getPlayer().getName() + " has made the advancement [" + advancementTitle + "]",
-            advancementDescription
-        );
+        if(!EssentialsPermission.isVanished(event.getPlayer())) {
+            DiscordEssentials.getBot().getWebhook().sendEmbed(
+                Colors.INFO.getColor(),
+                DiscordEssentials.api.discord.getWebhookAvatarURL(),
+                Webhook.getAvatarURL(event.getPlayer()),
+                "Server",
+                prefix + " " + event.getPlayer().getName() + " has made the advancement [" + advancementTitle + "]",
+                advancementDescription
+            );
+        }
     }
 
 }
