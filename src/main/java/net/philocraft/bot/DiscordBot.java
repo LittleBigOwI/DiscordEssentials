@@ -7,6 +7,7 @@ import javax.security.auth.login.LoginException;
 
 import org.bukkit.Bukkit;
 
+import dev.littlebigowl.api.models.EssentialsPermission;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -54,7 +55,7 @@ public class DiscordBot {
             
             this.bot.getPresence().setActivity(Activity.playing(
                 this.status
-                .replace("{playerCount}", Bukkit.getOnlinePlayers().size() + "")
+                .replace("{playerCount}", (Bukkit.getOnlinePlayers().size() - EssentialsPermission.getVanishedPlayers().size()) + "")
                 .replace("{maxPlayers}", Bukkit.getMaxPlayers() + ""))
             );
 
