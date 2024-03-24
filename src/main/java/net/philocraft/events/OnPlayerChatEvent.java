@@ -17,7 +17,6 @@ public class OnPlayerChatEvent implements Listener{
         Player player = event.getPlayer();
 
         bot.getWebhook().sendMessage(
-            player.getUniqueId(),
             player.getName(),
             event.getMessage()
         );

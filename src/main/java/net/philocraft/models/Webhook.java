@@ -1,7 +1,6 @@
 package net.philocraft.models;
 
 import java.awt.Color;
-import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
@@ -22,16 +21,16 @@ public class Webhook {
         this.clientBuilder = new WebhookClientBuilder(webhookURL);
     }
 
-    public static String getAvatarURL(UUID uuid) {
-        return "https://crafatar.com/avatars/" + uuid + ".png";
+    public static String getAvatarURL(String username) {
+        return "https://minotar.net/avatar/" + username + ".png";
     }
 
     public static String getAvatarURL(Player player) {
-        return "https://crafatar.com/avatars/" + player.getUniqueId() + ".png";
+        return "https://minotar.net/avatar/" + player.getName() + ".png";
     }
 
-    public void sendMessage(UUID uuid, String username, String message) {
-        String avatarURL = getAvatarURL(uuid);
+    public void sendMessage(String username, String message) {
+        String avatarURL = getAvatarURL(username);
         
         this.messageBuilder.setContent(message);
         this.messageBuilder.setAvatarUrl(avatarURL);
